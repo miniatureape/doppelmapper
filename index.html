@@ -2,7 +2,9 @@
 <html>
   <head>
     <style type="text/css">
+
       html, body { height: 100%; margin: 0; padding: 0; }
+
       .map { 
           height: 100%; 
           float: left;
@@ -39,26 +41,6 @@ function initMaps() {
           { visibility: "simplified" }
         ]
       },
-      {
-        featureType: "all",
-        elementType: "labels",
-        stylers: [
-          { visibility: "off" }
-        ]
-      },
-      {
-        featureType: "roads.arterial",
-        stylers: [
-          { saturation: -80 }
-        ]
-      },
-      {
-        featureType: "roads.arterial",
-        elementType: "all",
-        stylers: [
-          { visibility: "off" }
-        ]
-      },
     ].concat(sharedStyles);
 
     var mapInStyles = [].concat(sharedStyles);
@@ -73,6 +55,26 @@ function initMaps() {
         center: center,
         zoom: inZoom,
         styles: mapInStyles,
+    });
+
+
+    var rectangle;
+    mapIn.addListener('bounds_changed', function(e) {
+
+        if (rectangle) {
+            rectangle.setMap(null);
+        }
+
+        rectangle = new google.maps.Rectangle({
+            strokeColor: '#FF0000',
+            strokeOpacity: 1,
+            strokeWeight: 1,
+            fillColor: '#000000',
+            fillOpacity: 0.0,
+            map: mapOut,
+            bounds: mapIn.getBounds(),
+        });
+
     });
 
     mapIn.addListener('center_changed', function(e) {
