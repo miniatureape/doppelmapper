@@ -4,4 +4,4 @@ A dual-pane view of google maps. The left side stays zoomed out while the right 
 
 ![screen shot](http://miniatureape.github.io/doppelmapper/assets/screenshot.png)
 
-[miniatureape.github.io/doppelmapper]
+<miniatureape.github.io/doppelmapper>
