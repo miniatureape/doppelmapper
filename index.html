@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style type="text/css">
+      html, body { height: 100%; margin: 0; padding: 0; }
+      .map { 
+          height: 100%; 
+          float: left;
+      }
+
+      #map-in {
+          width: 60%;
+      }
+
+      #map-out {
+          width: 40%;
+      }
+
+    </style>
+  </head>
+  <body>
+    <div class="map" id="map-out"></div>
+    <div class="map" id="map-in"></div>
+<script type="text/javascript">
+
+
+function initMaps() {
+
+    var inZoom = 10;
+    var zoomDiff = 4;
+    var center = {lat: 42.1958, lng: -73.3625};
+
+    var sharedStyles = [];
+
+    var mapOutStyles = [
+      {
+        featureType: "all",
+        stylers: [
+          { visibility: "simplified" }
+        ]
+      },
+      {
+        featureType: "all",
+        elementType: "labels",
+        stylers: [
+          { visibility: "off" }
+        ]
+      },
+      {
+        featureType: "roads.arterial",
+        stylers: [
+          { saturation: -80 }
+        ]
+      },
+      {
+        featureType: "roads.arterial",
+        elementType: "all",
+        stylers: [
+          { visibility: "off" }
+        ]
+      },
+    ].concat(sharedStyles);
+
+    var mapInStyles = [].concat(sharedStyles);
+
+    var mapOut = new google.maps.Map(document.getElementById('map-out'), {
+        center: center,
+        zoom: inZoom - zoomDiff,
+        styles: mapOutStyles,
+    });
+
+    var mapIn = new google.maps.Map(document.getElementById('map-in'), {
+        center: center,
+        zoom: inZoom,
+        styles: mapInStyles,
+    });
+
+    mapIn.addListener('center_changed', function(e) {
+        mapOut.setCenter(mapIn.getCenter());
+    });
+
+    mapIn.addListener('zoom_changed', function(e) {
+        mapOut.setZoom(mapIn.getZoom() - zoomDiff);
+    });
+
+    mapOut.addListener('zoom_changed', function(e) {
+        zoomDiff = mapIn.getZoom() - mapOut.getZoom();
+    });
+
+}
+
+</script>
+     <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBYAJ51pvSmz9Vp30WSlNDdE7k5ZSsmGSM&callback=initMaps">
+    </script>
+  </body>
+</html>
